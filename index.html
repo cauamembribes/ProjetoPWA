@@ -4,20 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <script src="script.js" defer></script>
-    <title>Pokedex</title>
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
+    <script src="js/script.js" defer></script>
+    <title>Pokédex</title>
 </head>
 <body>
     <div class="container">
         <div class="images">
-            <img src="" id="pokemonimage">
-            <img src="" id="pokemonimageshiny">
-            <audio src="" id="audioCry"></audio>
+            <img src="#" id="pokemonimage">
+            <!-- <audio src="#" id="audioCry"></audio> -->
         </div>
         
-        <input type="text" name="" id="pokemon" placeholder="Digite o Pokémon">
-        <button id="search-pokemon">Buscar</button>
+        <div class="pokestats">
+            <span class="pokemon_name"></span>
+            <span class="pokemon_type"></span>
+        </div>
+
+        <div class="search-box">
+            <input type="text" name="input-pokemon" class="input-pokemon" id="pokemon" placeholder="Digite o Pokémon">
+            <button id="search-pokemon">Buscar</button>
+            <input type="checkbox" name="checkShiny" id="checkShiny">
+
+        </div>
     </div>
 </body>
 </html>

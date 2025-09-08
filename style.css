@@ -1,23 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Rubik", sans-serif;
 }
 
-.container {
-    display: flex;
+body {
+    text-align: center; /* uso text-align pois inline-block trata elemetos como conteúdo dentro de uma linha de texto */
     height: 100vh;
-    width: 100vw;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background-image: url('assets/background.jpg');
+}
+
+main {
+    display: inline-block; /* o display inline trata elementos como conteúdo dentro de uma linha de texto */
+    margin-top: 2%;
+    padding: 15px;
+    position: relative; /* o relative permite que elementos filhos com 'position: absolute;' sejam posicionados em relação ao 'main' que é o elemento pai */
 }
 
 .search-box {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    position: absolute;
+    width: 65%;
+    top: 65%;
+    left: 13.5%;
 }
 
 
+.pokedex {
+    width: 100%;
+    max-width: 425px;
+}
+
+#pokemonimage {
+    position: absolute;
+    bottom: 52%;
+    left: 52%;
+    transform: translate(-63%, 20%);
+    height: 22%;
+}
+
+.pokename {
+    position: absolute;
+    font-weight: 600;
+    color: black;
+    top: 54.5%;
+    right: 27%;
+    font-size: 25px;
+}
+
+.pokestats {
+    position: absolute;
+    font-weight: 450;
+    color: black;
+    top: 70%;
+    right: 37%;
+    font-size: 25px;
+}
+
+.pokestats span {
+  display: block;
+  margin: 2px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px){
+    .pokestats {
+    position: absolute;
+    font-weight: 450;
+    color: black;
+    top: 73%;
+    right: 35%;
+    font-size: 22px;
+}
+}
 

@@ -10,23 +10,31 @@
     <title>Pokédex</title>
 </head>
 <body>
-    <div class="container">
+    <main>
         <div class="images">
             <img src="#" id="pokemonimage">
-            <!-- <audio src="#" id="audioCry"></audio> -->
+            <audio src="#" id="audioCry"></audio>
         </div>
         
-        <div class="pokestats">
+
+        <div class="pokename">
             <span class="pokemon_name"></span>
+        </div>
+
+        <div class="pokestats">
             <span class="pokemon_type"></span>
+            <span class="pokemon_height"></span>
+            <span class="pokemon_weight"></span>
         </div>
 
         <div class="search-box">
             <input type="text" name="input-pokemon" class="input-pokemon" id="pokemon" placeholder="Digite o Pokémon">
             <button id="search-pokemon">Buscar</button>
             <input type="checkbox" name="checkShiny" id="checkShiny">
+            <label for="checkShiny"></label>
 
         </div>
-    </div>
+        <img src="assets/pokedex.png" alt="pokedex" class="pokedex">
+    </main>
 </body>
 </html>

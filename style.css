@@ -64,13 +64,13 @@ main {
   text-align: center;
 }
 
-@media (max-width: 768px){
+@media (max-width: 1024px){
     .pokestats {
     position: absolute;
     font-weight: 450;
     color: black;
-    top: 73%;
-    right: 35%;
+    top: 72%;
+    right: 37.5%;
     font-size: 22px;
 }
 }

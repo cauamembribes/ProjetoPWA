@@ -50,7 +50,7 @@ function procurarPokemon () {
         pokeType.innerHTML = "Tipo: " + dados.types
   .map(t => typeTranslate[t.type.name] || t.type.name)
   .join(", ");
-        pokeHeight.innerHTML = `Height: ${dados.height / 10} m`
+        pokeHeight.innerHTML = `Altura: ${dados.height / 10} m`
         pokeWeight.innerHTML = `Peso: ${dados.weight / 10} kg`
         pokeCry.src = dados.cries.latest; 
         pokeCry.play(); // usei o .play() para poder tocar o audio

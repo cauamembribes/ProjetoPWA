@@ -4,3 +4,7 @@ manifest.json é um arquivo de configuração onde será armazenado os metadados
 
 "display" é usado para especificar o modo de exibição favorito para a PWA.
 "standalone" é usado para que ele pareça um aplicativo nativo independente. Isso pode incluir uma janela própria e um icone próprio.
+
+pesquisar cookies
+
+ciclo de vida service worker cache

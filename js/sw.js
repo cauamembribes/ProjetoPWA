@@ -1,11 +1,16 @@
-/* O Service Worker é um script que o navegador executa em segundo plano, ele funciona como 
-intermediário entre a aplicação e a redes, que permite funcionalidades como funcionar 
-de forma offline, permite receber notificações mesmo que o app esteja fechado, 
-sincronização em segundo plano e etc*/
+/* 
+ Service Worker é um script que o navegador executa em segundo plano.
+ Ele funciona como intermediário entre a aplicação e a rede, trazendo recursos como:
+ - Funcionamento offline (cacheando arquivos);
+ - Receber notificações push mesmo com o app fechado;
+ - Sincronização em segundo plano;
+ - Melhor desempenho em aplicações web.
+*/
 
-const CACHE_NAME = "app-cache-v1"; // constante onde vai ser salvo os arquivos
+const CACHE_NAME = "app-cache-v1"; // Nome do cache.
 
-const cache_items = [ // lista de arquivos que você quer guardar logo na instalação (cache estático).
+const cache_items = [ 
+    // Arquivos principais do app que já serão armazenados na instalação do Service Worker (cache estático).
     "js/sw.js",
     "js/script.js",
     "index.html",
@@ -13,29 +18,41 @@ const cache_items = [ // lista de arquivos que você quer guardar logo na instal
     "style.css"
 ];
 
-const POKEMON_IDS = Array.from({length: 151}, (_, i) => i + 1);
+const POKEMON_IDS = Array.from({length: 251}, (_, i) => i + 1); 
+// Gera um array com IDs de 1 até 251 (primeiras gerações).
 
+// EVENTO INSTALL -> Disparado na primeira vez que o SW é registrado.
+// Aqui podemos preparar e salvar no cache os arquivos básicos e dados iniciais.
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(async (cache) => {
+            // Cacheia os arquivos estáticos
+            await cache.addAll(cache_items);
+
+            // Pré-carrega os primeiros 251 Pokémons
             for (let id of POKEMON_IDS) {
                 try {
-                    let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-                    cache.put(`https://pokeapi.co/api/v2/pokemon/${id}`, response.clone());
+                    let request = new Request(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                    let response = await fetch(request);
+                    if (response.ok) {
+                        cache.put(request, response.clone()); // salva pelo Request
+                    }
                 } catch (err) {
-                    console.log('Erro ao cachear Pokémon', id);
+                    console.log('Erro ao cachear Pokémon', id, err);
                 }
             }
         })
     );
 });
 
+// EVENTO ACTIVATE -> Ocorre quando o service worker recém-instalado assume o controle.
+// Aqui limpamos caches antigos para manter apenas a versão atual.
 self.addEventListener('activate', (e) => {
     e.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cache) => {
-                    if (cache !== CACHE_NAME) {  // mantém só o cache atual
+                    if (cache !== CACHE_NAME) {  
                         console.log('Service Worker: Cache antigo removido', cache);
                         return caches.delete(cache);
                     }
@@ -45,26 +62,29 @@ self.addEventListener('activate', (e) => {
     );
 });
 
+// EVENTO FETCH -> Intercepta todas as requisições da aplicação.
+// Aqui podemos responder com o cache ou buscar da rede.
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request).then((cachedResponse) => {
+            // Se já tiver cache, retorna
+            if (cachedResponse) return cachedResponse;
 
-self.addEventListener('fetch', (e) => {
-    if (e.request.url.includes('pokeapi.co/api/v2/pokemon')) {
-        e.respondWith(
-            caches.match(e.request).then((cachedResponse) => {
-                if (cachedResponse) return cachedResponse;
+            // Caso contrário, busca da rede e salva no cache
+            return fetch(event.request).then((networkResponse) => {
+                // Só salva no cache se a resposta for válida
+                if (!networkResponse || !networkResponse.ok) {
+                    return networkResponse;
+                }
 
-                return fetch(e.request).then((networkResponse) => {
-                    return caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(e.request, networkResponse.clone());
-                        return networkResponse;
-                    });
+                return caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, networkResponse.clone()); 
+                    return networkResponse;
                 });
-            }).catch((erro) => {
-                console.log("Ocorreu um erro.", erro)
-            })
-        );
-    }
+            });
+        }).catch((err) => {
+            console.log("Erro durante o fetch:", err);
+            // Aqui daria para retornar um fallback offline se você quiser
+        })
+    );
 });
-
-
-
-
